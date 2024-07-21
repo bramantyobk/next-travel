@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Axios from "axios";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 const Login = () => {
 	const router = useRouter();
-	const [formData, setFormData] = useState({
-		name: "",
-		role: "",
-		phoneNumber: "",
-		email: "",
-		password: "",
-		passwordRepeat: "",
-	});
+	const [formData, setFormData] = useState({});
 	const [file, setFile] = useState(null);
 	const [isConfirm, setIsConfirm] = useState(false);
 	const [isFilled, setIsFilled] = useState(false);

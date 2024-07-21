@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Login = () => {
+	const router = useRouter();
 	const [formData, setFormData] = useState({ email: "", password: "" });
+	const [isSuccess, setIsSuccess] = useState(false);
+
 	const onSubmit = async (event) => {
 		event.preventDefault();
 
@@ -18,9 +22,13 @@ const Login = () => {
 				dataLogin,
 				configHeaders
 			);
-			const authToken = res?.data.token;
-			console.log(authToken);
-			localStorage.setItem("accessToken", authToken);
+			localStorage.setItem("accessToken", res?.data.token);
+			localStorage.setItem("userRole", res?.data.data.role);
+			setIsSuccess(true);
+			setTimeout(() => {
+				setIsSuccess(true);
+				router.push("/dashboard");
+			}, 3000);
 		} catch (err) {
 			console.log(err.response.data.message);
 			let errMessage = err.response.data.message;
