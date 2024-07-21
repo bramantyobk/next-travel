@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Axios from "axios";
+import axios from "axios";
 import { useRouter } from "next/router";
 
 const Login = () => {
@@ -44,7 +44,7 @@ const Login = () => {
 		};
 
 		try {
-			const resUploadPicture = await Axios.post(
+			const resUploadPicture = await axios.post(
 				"https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
 				uploadImage,
 				configHeaders
@@ -69,7 +69,7 @@ const Login = () => {
 				payload.email &&
 				payload.password === payload.passwordRepeat
 			) {
-				const resRegister = await Axios.post(
+				const resRegister = await axios.post(
 					`https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/register`,
 					payload,
 					configHeaders

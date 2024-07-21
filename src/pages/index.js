@@ -2,21 +2,15 @@ import Head from "next/head";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 
-const inter = Poppins({
+const poppins = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 	subsets: ["latin"],
 });
 
-export const Metadata = {
-	title: "Next Travel",
-	description: "Find Amazing and Relaxing Travel",
-	icons: "/favicon.svg",
-};
-
 export default function Home() {
 	return (
 		<main
-			className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+			className={`flex min-h-screen flex-col items-center justify-between p-24 ${poppins.className}`}
 		>
 			<div className="z-10 items-center justify-between w-full max-w-5xl font-mono text-sm lg:flex">
 				<p className="fixed top-0 left-0 flex justify-center w-full pt-8 pb-6 border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">

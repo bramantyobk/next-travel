@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Axios from "axios";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -17,7 +17,7 @@ const Login = () => {
 		};
 
 		try {
-			const res = await Axios.post(
+			const res = await axios.post(
 				"https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/login",
 				dataLogin,
 				configHeaders
@@ -26,8 +26,8 @@ const Login = () => {
 			localStorage.setItem("userRole", res?.data.data.role);
 			setIsSuccess(true);
 			setTimeout(() => {
-				setIsSuccess(true);
-				router.push("/dashboard");
+				setIsSuccess(false);
+				router.push("/register");
 			}, 3000);
 		} catch (err) {
 			console.log(err.response.data.message);
