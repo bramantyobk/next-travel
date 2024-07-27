@@ -4,8 +4,6 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Sidebar from "@/components/Sidebar";
-import { useSelector } from "react-redux";
-import useLoggedUser from "@/hooks/useLoggedUser";
 
 const Card = dynamic(() => import("@/components/CardUser"));
 
@@ -57,9 +55,8 @@ const User = () => {
 	};
 
 	return (
-		<div className="flex flex-row items-center justify-center min-h-screen py-8 bg-gray-100">
+		<main className="flex flex-row items-center justify-center min-h-screen py-8 bg-gray-100">
 			<Sidebar />
-			<div className="md:w-1/6"></div>
 			<InfiniteScroll
 				dataLength={visibleUser.length}
 				next={loadMore}
@@ -70,13 +67,15 @@ const User = () => {
 					</div>
 				}
 			>
-				<div className="grid w-full grid-cols-1 gap-3 mx-auto lg:w-5/6 md:grid-cols-2 lg:grid-cols-3 place-content-center text-wrap">
+				<section
+					className={`grid w-full grid-cols-1 gap-3 mx-auto lg:w-5/6 md:grid-cols-2 lg:grid-cols-3 place-content-center text-wrap`}
+				>
 					{visibleUser.map((user, item) => (
 						<Card key={item} user={user} />
 					))}
-				</div>
+				</section>
 			</InfiniteScroll>
-		</div>
+		</main>
 	);
 };
 

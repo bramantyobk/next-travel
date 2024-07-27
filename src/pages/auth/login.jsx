@@ -4,12 +4,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slice/userLoggedSlice";
+import LoginSuccess from "@/components/LoginSuccess";
+import LoginFailed from "@/components/LoginFailed";
 
 const Login = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const [formData, setFormData] = useState({ email: "", password: "" });
 	const [isSuccess, setIsSuccess] = useState(false);
+	const [isError, setIsError] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errMessage, setErrMessage] = useState("");
 
@@ -50,20 +53,26 @@ const Login = () => {
 				}
 			}, 3000);
 		} catch (err) {
-			console.log(err);
 			setIsLoading(false);
+			setIsError(true);
 			if (err?.response.data.message === "User not found") {
 				let message = `${message}, please create an account first`;
 				setErrMessage(message);
 			}
 			setErrMessage("Please check your email or password again");
+			setTimeout(() => {
+				setIsError(false);
+				setErrMessage("");
+			}, 3000);
 		}
 	};
 
 	return (
-		<div className="flex items-center justify-center min-h-screen bg-gray-100 lg:bg-center lg:bg-cover lg:bg-img-login lg:justify-end">
-			<div className="w-full max-w-md p-8 bg-white shadow-lg rounded-[30px] lg:mr-32">
+		<main className="flex items-center justify-center min-h-screen bg-gray-100 lg:bg-center lg:bg-cover lg:bg-img-login lg:justify-end">
+			<section className="w-full max-w-md p-8 bg-white shadow-lg rounded-[30px] lg:mr-32">
 				<h2 className="mb-6 text-2xl font-bold text-center">Sign In</h2>
+				{isSuccess && <LoginSuccess isSusccess={`Login Success`} />}
+				{isError && <LoginFailed errMessage={errMessage} />}
 				<form onSubmit={onSubmit}>
 					<div className="mb-4">
 						<label className="block p-2 text-gray-700" htmlFor="email">
@@ -127,8 +136,8 @@ const Login = () => {
 				>
 					Create New Account
 				</Link>
-			</div>
-		</div>
+			</section>
+		</main>
 	);
 };
 

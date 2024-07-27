@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import LoginSuccess from "@/components/LoginSuccess";
 
 const Login = () => {
 	const router = useRouter();
 	const [formData, setFormData] = useState({});
 	const [file, setFile] = useState(null);
 	const [isConfirm, setIsConfirm] = useState(false);
-	const [isError, setIsError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const [isError, setIsError] = useState(false);
+	const [errMessage, setErrMessage] = useState("");
 	const [isSuccess, setIsSuccess] = useState(false);
 
 	const options = [
@@ -75,14 +78,19 @@ const Login = () => {
 					payload,
 					configHeaders
 				);
+				setIsLoading(true);
+				setIsSuccess(true);
 				setTimeout(() => {
 					router.push("/auth/login");
+					setIsSuccess(false);
+					setIsLoading(false);
 				}, 3000);
 			} else {
 				throw new Error("check the input");
 			}
 		} catch (err) {
-			setIsError(err.response.data.message);
+			setIsError(true);
+			setErrMessage(err.response.data.message);
 			setTimeout(() => {
 				setIsError(false);
 			}, 5000);
@@ -90,11 +98,14 @@ const Login = () => {
 	};
 
 	return (
-		<div className="flex items-center justify-center min-h-screen bg-gray-100">
-			<div className="w-full max-w-md p-8 bg-white shadow-lg rounded-[30px]">
-				<h2 className="mb-6 text-2xl font-bold text-center">Sign In</h2>
+		<main className="flex items-center justify-center min-h-screen bg-gray-100 lg:bg-center lg:bg-cover lg:bg-img-login lg:justify-end">
+			<section className="w-full max-w-md p-8 bg-white shadow-lg rounded-[30px]">
+				<h2 className="mb-6 text-2xl font-bold text-center">
+					Register Account
+				</h2>
+				{isSuccess && <LoginSuccess isSusccess={`Register Success`} />}
 				{isError && (
-					<div role="alert" className="m-1 alert alert-warning">
+					<div role="alert" className="m-2 alert alert-warning">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							className="w-6 h-6 stroke-current shrink-0"
@@ -108,7 +119,7 @@ const Login = () => {
 								d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
 							/>
 						</svg>
-						<span>{isError}!</span>
+						<span>{errMessage}!</span>
 					</div>
 				)}
 				<form onSubmit={onSubmit}>
@@ -230,6 +241,9 @@ const Login = () => {
 						type="submit"
 						className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-md hover:bg-orange-600"
 					>
+						{isLoading && (
+							<span className="loading loading-spinner loading-lg"></span>
+						)}
 						Create account
 					</button>
 				</form>
@@ -238,8 +252,8 @@ const Login = () => {
 						Create New Account
 					</a>
 				</div> */}
-			</div>
-		</div>
+			</section>
+		</main>
 	);
 };
 

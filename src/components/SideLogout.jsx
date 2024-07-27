@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { clearUser } from "@/redux/slice/userLoggedSlice";
 import { GrLogout } from "react-icons/gr";
+import axios from "axios";
 
 const SideLogout = ({ open }) => {
 	const router = useRouter();

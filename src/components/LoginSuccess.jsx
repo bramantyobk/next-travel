@@ -1,5 +1,5 @@
 const LoginSuccess = ({ isSusccess }) => {
-	<div role="alert" className="alert alert-success">
+	<div role="alert" className="m-2 alert alert-success">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			className="w-6 h-6 stroke-current shrink-0"
@@ -14,6 +14,7 @@ const LoginSuccess = ({ isSusccess }) => {
 			/>
 		</svg>
 		<span>{isSusccess}</span>
+		<span className="loading loading-spinner loading-lg"></span>
 	</div>;
 };
 

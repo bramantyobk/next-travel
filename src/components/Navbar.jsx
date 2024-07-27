@@ -93,7 +93,7 @@ const Navbar = () => {
 							<NavUser />
 						</div>
 					) : (
-						<div className="px-7 py-2 bg-[#ff9357] hover:border-2 hover:border[#ff9357] hover:bg-white rounded-full font-bold text-white hover:text-black">
+						<div className="hidden md:block px-7 py-2 bg-[#ff9357] hover:border-2 hover:border[#ff9357] hover:bg-white rounded-full font-bold text-white hover:text-black">
 							<Link href="/auth/login">Login</Link>
 						</div>
 					)}
@@ -126,7 +126,7 @@ const Navbar = () => {
 						<Link
 							href="/promo"
 							className={`block py-2 hover:text-[#ff9357]${
-								pathname === "/" && "text-primary font-bold"
+								pathname === "/promo" && "text-primary font-bold"
 							}`}
 						>
 							Promo
@@ -140,7 +140,16 @@ const Navbar = () => {
 								Dashboard
 							</Link>
 						)}
-						<NavUser />
+
+						{logged ? (
+							<div className="lg:hidden">
+								<NavUser />
+							</div>
+						) : (
+							<div className="px-7 py-2 bg-[#ff9357] hover:border-2 hover:border[#ff9357] hover:bg-white rounded-full font-bold text-white hover:text-black">
+								<Link href="/auth/login">Login</Link>
+							</div>
+						)}
 					</div>
 				)}
 			</nav>
