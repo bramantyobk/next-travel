@@ -26,8 +26,8 @@ const DeletePromo = ({ promo, setDelete }) => {
 			<div className="text-lg font-bold text-red-500">Delete Promo</div>
 			<div>
 				Are you sure to delete{" "}
-				<span className="text-lg font-bold text-black">{promo.title}</span>'s
-				promo?
+				<span className="text-lg font-bold text-black">{promo.title}</span>
+				&apos;s promo?
 			</div>
 			<button
 				className="w-full p-3 mt-3 font-bold text-white bg-red-500 rounded-full hover:text-red-500 hover:bg-white hover:border hover:border-red-500"

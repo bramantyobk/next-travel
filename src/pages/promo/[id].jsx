@@ -22,7 +22,9 @@ const PromoPage = ({ promo }) => {
 		<main>
 			<Navbar />
 			<div className="flex flex-col items-center justify-center pt-40">
-				<div className="mb-10 text-2xl font-bold">{promo.title}'s Promo</div>
+				<div className="mb-10 text-2xl font-bold">
+					{promo.title}&apos;s Promo
+				</div>
 				<div className="flex flex-col items-center justify-center p-5 bg-white rounded-xl">
 					<div className="p-5">
 						<img
