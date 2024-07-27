@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/slice/userLoggedSlice";
 
 const Login = () => {
 	const router = useRouter();
+	const dispatch = useDispatch();
 	const [formData, setFormData] = useState({ email: "", password: "" });
 	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [errMessage, setErrMessage] = useState("");
+
+	const handleChange = (event) => {
+		setFormData({
+			...formData,
+			[event.target.name]: event.target.value,
+		});
+	};
+
+	useEffect(() => {}, [formData]);
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
@@ -15,7 +29,7 @@ const Login = () => {
 		const configHeaders = {
 			headers: { apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c" },
 		};
-
+		setIsLoading(true);
 		try {
 			const res = await axios.post(
 				"https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/login",
@@ -24,29 +38,31 @@ const Login = () => {
 			);
 			localStorage.setItem("accessToken", res?.data.token);
 			localStorage.setItem("userRole", res?.data.data.role);
+			dispatch(setUser(res?.data.data));
 			setIsSuccess(true);
 			setTimeout(() => {
-				setIsSuccess(false);
-				router.push("/register");
+				if (res?.data.data.role === "admin") {
+					router.push("/dashboard/user");
+					setIsSuccess(false);
+					setIsLoading(false);
+				} else {
+					router.push("/");
+				}
 			}, 3000);
 		} catch (err) {
-			console.log(err.response.data.message);
-			let errMessage = err.response.data.message;
-			if (errMessage === "User not found")
-				alert(`${errMessage}, please register first`);
-			alert("Please check your email or password again");
+			console.log(err);
+			setIsLoading(false);
+			if (err?.response.data.message === "User not found") {
+				let message = `${message}, please create an account first`;
+				setErrMessage(message);
+			}
+			setErrMessage("Please check your email or password again");
 		}
 	};
 
-	const handleChange = (event) => {
-		setFormData({
-			...formData,
-			[event.target.name]: event.target.value,
-		});
-	};
 	return (
-		<div className="flex items-center justify-center min-h-screen bg-gray-100">
-			<div className="w-full max-w-md p-8 bg-white shadow-lg rounded-[30px]">
+		<div className="flex items-center justify-center min-h-screen bg-gray-100 lg:bg-center lg:bg-cover lg:bg-img-login lg:justify-end">
+			<div className="w-full max-w-md p-8 bg-white shadow-lg rounded-[30px] lg:mr-32">
 				<h2 className="mb-6 text-2xl font-bold text-center">Sign In</h2>
 				<form onSubmit={onSubmit}>
 					<div className="mb-4">
@@ -95,14 +111,22 @@ const Login = () => {
 						type="submit"
 						className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-md hover:bg-orange-600"
 					>
-						Sign In
+						{isLoading ? (
+							<span className="loading loading-spinner loading-lg">
+								Loading
+							</span>
+						) : (
+							"Sign In"
+						)}
 					</button>
 				</form>
-				<div className="mt-6 text-center">
-					<a href="#" className="text-indigo-600 hover:underline">
-						Create New Account
-					</a>
-				</div>
+
+				<Link
+					href="/auth/register"
+					className="block w-full px-4 py-2 mt-6 font-bold text-center text-gray-500 bg-white rounded-full hover:bg-orange-200 hover:text-gray-700"
+				>
+					Create New Account
+				</Link>
 			</div>
 		</div>
 	);

@@ -1,6 +1,13 @@
-import Axios from "axios";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { clearUser } from "@/redux/slice/userLoggedSlice";
+import { GrLogout } from "react-icons/gr";
 
-const Logout = () => {
+const Logout = ({ className }) => {
+	const router = useRouter();
+	const dispatch = useDispatch();
+
 	const handleLogout = async () => {
 		const accessToken = localStorage.getItem("accessToken");
 
@@ -12,20 +19,23 @@ const Logout = () => {
 		};
 
 		try {
-			const res = await Axios.post(
+			const res = await axios.get(
 				`https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/logout`,
 				configHeaders
 			);
+			dispatch(clearUser());
 			localStorage.removeItem("accessToken");
 			localStorage.removeItem("userRole");
+			router.push("/");
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
 	return (
-		<button>
-			<div>Logout</div>
+		<button onClick={handleLogout} className={className}>
+			<GrLogout />
+			Logout
 		</button>
 	);
 };

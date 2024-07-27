@@ -1,18 +1,20 @@
 import useAuth from "@/hooks/useAuth";
-import useIntersectionObserver from "@/hooks/useIntersectionObserer";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Sidebar from "@/components/Sidebar";
+import { useSelector } from "react-redux";
+import useLoggedUser from "@/hooks/useLoggedUser";
 
 const Card = dynamic(() => import("@/components/CardUser"));
 
-const user = () => {
+const User = () => {
 	useAuth("admin");
+
 	const [users, setUsers] = useState([]);
 	const [visibleUser, setVisibleUser] = useState([]);
 	const [hasMore, setHasMore] = useState(true);
-	// const [loading, setLoading] = useState(false);
 
 	const getUsers = async () => {
 		const config = {
@@ -30,9 +32,7 @@ const user = () => {
 
 			const userData = res.data.data;
 			setUsers(userData);
-			setVisibleUser(userData.slice(0, 18));
-			// setLoading(false);
-			// setHasMore(userData.length > 0);
+			setVisibleUser(userData.slice(0, 9));
 		} catch (err) {
 			console.log(err);
 		}
@@ -57,14 +57,20 @@ const user = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen py-8 bg-gray-100">
+		<div className="flex flex-row items-center justify-center min-h-screen py-8 bg-gray-100">
+			<Sidebar />
+			<div className="md:w-1/6"></div>
 			<InfiniteScroll
 				dataLength={visibleUser.length}
 				next={loadMore}
 				hasMore={hasMore}
-				loader={<p className="text-4xl text-center">Loading...</p>}
+				loader={
+					<div className="flex justify-center mt-10">
+						<span className="block loading loading-infinity loading-lg"></span>
+					</div>
+				}
 			>
-				<div className="grid w-full max-w-screen-xl grid-cols-1 gap-4 mx-auto md:grid-cols-2 lg:grid-cols-3 place-content-center">
+				<div className="grid w-full grid-cols-1 gap-3 mx-auto lg:w-5/6 md:grid-cols-2 lg:grid-cols-3 place-content-center text-wrap">
 					{visibleUser.map((user, item) => (
 						<Card key={item} user={user} />
 					))}
@@ -74,4 +80,4 @@ const user = () => {
 	);
 };
 
-export default user;
+export default User;

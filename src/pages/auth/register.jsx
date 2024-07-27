@@ -7,7 +7,6 @@ const Login = () => {
 	const [formData, setFormData] = useState({});
 	const [file, setFile] = useState(null);
 	const [isConfirm, setIsConfirm] = useState(false);
-	const [isFilled, setIsFilled] = useState(false);
 	const [isError, setIsError] = useState("");
 	const [isSuccess, setIsSuccess] = useState(false);
 
@@ -29,6 +28,8 @@ const Login = () => {
 
 		if (formData.password === formData.passwordRepeat) setIsConfirm(true);
 	};
+
+	useEffect(() => {}, [formData]);
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
@@ -201,7 +202,9 @@ const Login = () => {
 							type="password"
 							name="password"
 							id="password"
-							className="w-full px-3 py-2 border rounded-full focus:outline-none focus:ring focus:ring-[#FF9357]"
+							className={`w-full px-3 py-2 border rounded-full focus:outline-none focus:ring focus:ring-[#FF9357] ${
+								isConfirm ? "border-green-400" : "border-red-400"
+							}`}
 							placeholder="Password"
 							required
 						/>
@@ -215,7 +218,9 @@ const Login = () => {
 							type="password"
 							name="passwordRepeat"
 							id="passwordRepeat"
-							className="w-full px-3 py-2 border rounded-full focus:outline-none focus:ring focus:ring-[#FF9357]"
+							className={`w-full px-3 py-2 border rounded-full focus:outline-none focus:ring focus:ring-[#FF9357] ${
+								isConfirm ? "border-green-400" : "border-red-400"
+							}`}
 							placeholder="Input the password again"
 							required
 						/>
